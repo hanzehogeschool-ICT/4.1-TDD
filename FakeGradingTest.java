@@ -43,30 +43,94 @@ public class FakeGradingTest {
     @Test
     public void testPlayerWin() {
         assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0,-1)); // p1
-        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0,0)); // p2
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0,0));
         assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1,-2)); // p1
-        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1,0)); // p2
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1,0));
         assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1,-1)); // p1
-        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 1)); // p2
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 1));
         assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 0,-2)); // p1
-        assertDoesNotThrow(() -> hive.move(-1, 1, -1, 0)); // p2
-        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, 0,-3)); // p1
-        assertDoesNotThrow(() -> hive.move(1, 0, 1, -1)); // p2
+        assertDoesNotThrow(() -> hive.move(-1, 1, -1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, -1,-2)); // p1
+        assertDoesNotThrow(() -> hive.move(1, 0, 1, -1));
+        /**
+                     S1 A1 A1
+                      A1 Q1 A2
+                       A2 Q2
+         */
+
         assertTrue(() -> hive.isWinner(Hive.Player.BLACK));
     }
 
-    public void testDraw() {}
+    @Test
+    public void testDraw() {
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0,-1)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0,0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1,-2)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1,0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1,-1)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 1));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 0,-2)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, 0, 1));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, -1,-2)); // p1
+        assertDoesNotThrow(() -> hive.move(1, 0, 1, -1));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, -1,-3)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.BEETLE, 1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.BEETLE, -1,-4)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -2, 1));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.BEETLE, -1,-5)); // p1
+        assertDoesNotThrow(() -> hive.move(-2, 1, -1, 0));
+        /**
+            B1 B1 S1 S1 A1 A1
+                      A1 Q1 A2
+                       A2 Q2 B2
+                        B2 S2
+         */
+
+        assertTrue(() -> hive.isDraw());
+    }
 
     // Known used requirements
     //  - Req 12a: A player can pass if they have no valid plays or moves
     public void testPass() {}
 
-    public void testMoveWithoutBee() {}
+    @Test
+    public void testMoveWithoutBee() {
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 0, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 2, 0));
+        /**
+         *            A1 A1 A2 A2
+         */
+
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(-1, 0, 0, -1));
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(-1, 0, -1, +1));
+
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(-1, 0, -1, -1)); // not a valid end position
+    }
+
     public void testGrasshopperJumpSpace() {}
     public void testBeetleSlide() {}
     public void testBeetleStack() {}
     public void testMoveOpposingTiles() {}
-    public void testTurnFourBee() {}
+
+    @Test
+    public void testTurnFourBee() {
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 0, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 2, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, -2, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SPIDER, 3, 0));
+        /**
+         *          S1 A1 A1 A2 A2 S2
+         */
+
+        assertThrows(Hive.IllegalMove.class, () -> hive.play(Hive.Tile.BEETLE, -3, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, -3, 0)); // p1
+
+        assertThrows(Hive.IllegalMove.class, () -> hive.play(Hive.Tile.BEETLE, 4, 0));
+    }
     public void testPassOnlyClimb() {}
     public void testSlideThroughGate() {}
     public void testAntSlide() {}
@@ -77,10 +141,37 @@ public class FakeGradingTest {
     public void testClimbThroughGate() {}
     public void testMoveTilesAdjacent() {}
     public void testInitialTiles() {}
-    public void testHandSize() {}
+
+    @Test
+    public void testHandSize() {
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 1, 0));
+        assertThrows(Hive.IllegalMove.class, () -> hive.play(Hive.Tile.QUEEN_BEE, -1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 0)); // p1
+        assertThrows(Hive.IllegalMove.class, () -> hive.play(Hive.Tile.QUEEN_BEE, -2, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 2, 0));
+
+        /**
+         *            A1 Q1 Q2 A2
+         */
+    }
+
     public void testGrasshopperJump() {}
     public void testGrasshopperMove() {}
-    public void testSplitHive() {}
+
+    @Test
+    public void testSplitHive() {
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 0, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.QUEEN_BEE, 1, 0));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, -1, 0)); // p1
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 2, 0));
+        /**
+         *            A1 Q1 Q2 A2
+         */
+
+        assertThrows(Hive.IllegalMove.class, () -> hive.play(Hive.Tile.QUEEN_BEE, 5, 5));
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(-1, 0, -2, 0));
+    }
     public void testPlayStacked() {}
     public void testBeeSlide() {}
     public void testBeeStack() {}
