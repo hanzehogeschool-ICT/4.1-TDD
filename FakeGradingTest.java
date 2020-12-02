@@ -186,6 +186,8 @@ public class FakeGradingTest {
          */
 
         assertTrue(() -> hive.isDraw());
+        assertFalse(() -> hive.isWinner(Hive.Player.WHITE));
+        assertFalse(() -> hive.isWinner(Hive.Player.BLACK));
     }
 
     // Known used requirements
