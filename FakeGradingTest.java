@@ -326,7 +326,7 @@ public class FakeGradingTest {
         assertDoesNotThrow(() -> hive.move(-1, -1, 2, -3));
         /**              A1 A2
          *             S1 S2 A2
-         *             B1    B2
+         *            B1    B2
          *           Q1    Q2
          */
 
@@ -771,20 +771,17 @@ public class FakeGradingTest {
         /**
          *            A1 Q1 Q2 A2
          */
-        assertDoesNotThrow(() -> hive.move(-1, 0, 0, -1));
+        assertDoesNotThrow(() -> hive.move(-1, 0, 0, -1)); // p1
         assertDoesNotThrow(() -> hive.move(2, 0, 2, -1));
         /**             A1    A2
          *               Q1 Q2
          */
-        assertDoesNotThrow(() -> hive.move(0, 0, 1, -1));
-        assertDoesNotThrow(() -> hive.move(1, 0, 2, 0));
-        /**             A1 Q1 A2
-         *                      Q2
-         */
-        assertDoesNotThrow(() -> hive.move(0, -1, 0, 0));
-        assertDoesNotThrow(() -> hive.move(2, -1, 1, 0));
-        /**                Q1
-         *               A1 A2 Q2
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(0, 0, 1, -1));
+        assertDoesNotThrow(() -> hive.play(Hive.Tile.SOLDIER_ANT, 0, -2)); // p1
+        assertThrows(Hive.IllegalMove.class, () -> hive.move(1, 0, 2, 0));
+        /**           A1
+         *              A1 Q1 A2
+         *                x   x  Q2
          */
     }
 
