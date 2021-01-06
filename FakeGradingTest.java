@@ -458,7 +458,7 @@ public class FakeGradingTest {
          *              B1
          */
         assertDoesNotThrow(() -> hive.play(Hive.Tile.BEETLE, 0, 1)); // p1
-        assertDoesNotThrow(() -> hive.move(-2, 0, -2, 1)); // moves beetle from on top of spider to on top of spider opponent
+        assertDoesNotThrow(() -> hive.move(-2, 0, -2, -1)); // moves beetle from on top of spider to on top of spider opponent
         /**     A2
          *        (B2)      A1
          *          S2 S2 G1 Q1
@@ -468,7 +468,7 @@ public class FakeGradingTest {
          *              B1
          */
         assertDoesNotThrow(() -> hive.move(-3, 4, -2, 3)); // p1 moves beetle on top of spider opponent
-        assertDoesNotThrow(() -> hive.move(-2, 2, 2, 1)); // p2 moves ant away
+        assertDoesNotThrow(() -> hive.move(-2, -2, 2, -1)); // p2 moves ant away
         /**
          *        (B2)      A1 A2
          *          S2 S2 G1 Q1
